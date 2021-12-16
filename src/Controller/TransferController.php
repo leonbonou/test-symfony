@@ -7,6 +7,7 @@ use App\Entity\Transaction;
 use App\Entity\Transfert;
 use App\Form\TransfertType;
 use App\Functions\MyFunction;
+use App\Notification\EmailNotification;
 use App\Repository\TransactionRepository;
 use App\Repository\TransfertRepository;
 use DateTime;
@@ -33,16 +34,22 @@ class TransferController extends AbstractController
      * @var MyFunction
      */
     private $functions;
+    /**
+     * @var EmailNotification
+     */
+    private $emailNotification;
 
     /**
      * TransferController constructor.
      * @param Security $security
      * @param MyFunction $functions
+     * @param EmailNotification $emailNotification
      */
-    public function __construct(Security $security, MyFunction $functions)
+    public function __construct(Security $security, MyFunction $functions, EmailNotification $emailNotification)
     {
         $this->security = $security;
         $this->functions = $functions;
+        $this->emailNotification = $emailNotification;
     }
 
     /**
@@ -70,6 +77,7 @@ class TransferController extends AbstractController
                 ->setCreatedAt(new DateTime());
             $this->getDoctrine()->getManager()->persist($operation);
             $this->getDoctrine()->getManager()->flush();
+            //$this->emailNotification->transfertAlert($this->security->getUser(), $new_transfert);
             return $this->redirectToRoute('account_transfer');
         }
 

@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
             $this->getDoctrine()->getManager()->persist($user_client);
             $this->getDoctrine()->getManager()->flush();
 
-            $notification->sendConfirmation($user_client);
+            $notification->confirmAccount($user_client);
 
             return $this->redirectToRoute("security_login_client");
         }

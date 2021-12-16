@@ -50,6 +50,8 @@ class TransactionController extends AbstractController
 
     /**
      * @Route("/{id}", name="transaction_show", methods={"GET"})
+     * @param Transaction $transaction
+     * @return Response
      */
     public function show(Transaction $transaction): Response
     {
@@ -60,6 +62,10 @@ class TransactionController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="transaction_edit", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Transaction $transaction
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
     public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {

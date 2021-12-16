@@ -12,18 +12,8 @@ class UserClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username')
-            ->add('nom')
-            ->add('prenom')
-            ->add('date_at')
-            ->add('pays')
             ->add('email')
-            ->add('numero')
-            ->add('profession')
-            ->add('device')
-            ->add('created_at')
             ->add('password')
-            ->add('solde')
         ;
     }
 

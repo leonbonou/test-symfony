@@ -1,6 +1,8 @@
 <?php
 namespace App\Notification;
 
+use App\Entity\Transaction;
+use App\Entity\Transfert;
 use App\Entity\UserClient;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -15,22 +17,55 @@ class EmailNotification {
     /**
      * @var Environment
      */
-    private $environment;
+    private $twig;
 
-    public function __construct(MailerInterface $mailer , Environment $environment)
+    public function __construct(MailerInterface $mailer , Environment $twig)
     {
 
         $this->mailer = $mailer;
-        $this->environment = $environment;
+        $this->twig = $twig;
     }
 
-    public function sendConfirmation(UserClient $client) {
+    public function confirmAccount(UserClient $client) : void
+    {
         $email = (new Email())
-            ->from("anselmehotegni@gmail.com")
+            ->from("leonbonou20@gmail.com")
             ->to($client->getEmail())
-            ->subject("csc")
-            ->text("oko")
-            ->html("okoo")
+            ->subject("Confirmation Account")
+            ->html(
+                $this->twig->render('email/confirmAccount.html.twig', ['client'=> $client])
+                , 'text/html'
+            )
+        ;
+
+        $this->mailer->send($email);
+    }
+
+    public function transactionAlert(UserClient $client, Transaction $transaction) : void
+    {
+        $email = (new Email())
+            ->from("leonbonou20@gmail.com")
+            ->to($client->getEmail())
+            ->subject("Transaction notifcation")
+            ->html(
+                $this->twig->render('email/transactionAlert.html.twig', ['client'=> $client, 'transaction'=>$transaction])
+                , 'text/html'
+            )
+        ;
+
+        $this->mailer->send($email);
+    }
+
+    public function transfertAlert(UserClient $client, Transfert $transfert) : void
+    {
+        $email = (new Email())
+            ->from("leonbonou20@gmail.com")
+            ->to('azerty@querty.com')
+            ->subject("Transfert notifcation")
+            ->html(
+                $this->twig->render('email/transactionAlert.html.twig', ['client'=> $client, 'transfert'=>$transfert])
+                , 'text/html'
+            )
         ;
 
         $this->mailer->send($email);

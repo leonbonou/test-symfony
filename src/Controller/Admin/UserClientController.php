@@ -8,8 +8,8 @@ use App\Entity\Transfert;
 use App\Entity\UserClient;
 use App\Form\OperationType;
 use App\Form\TransactionType;
-use App\Form\TransfertType;
 use App\Form\UserClientType;
+use App\Notification\EmailNotification;
 use App\Repository\UserClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,10 +27,26 @@ class UserClientController extends AbstractController
      * @var Security
      */
     private $security;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var EmailNotification
+     */
+    private $emailNotification;
 
-    public function __construct(Security $security)
+    /**
+     * UserClientController constructor.
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param EmailNotification $emailNotification
+     */
+    public function __construct(Security $security, EntityManagerInterface $entityManager, EmailNotification $emailNotification)
     {
         $this->security = $security;
+        $this->entityManager = $entityManager;
+        $this->emailNotification = $emailNotification;
     }
 
     /**
@@ -48,15 +64,15 @@ class UserClientController extends AbstractController
     /**
      * @Route("/new", name="user_client_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $userClient = new UserClient();
         $form = $this->createForm(UserClientType::class, $userClient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($userClient);
-            $entityManager->flush();
+            $this->entityManager->persist($userClient);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('user_client_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -71,12 +87,12 @@ class UserClientController extends AbstractController
      * @Route("/show/{id}", name="user_client_show", methods={"GET|POST"})
      * @param UserClient $userClient
      * @param Request $request
+     * @param EntityManagerInterface $manager
      * @return Response
      */
     public function show(UserClient $userClient, Request $request): Response
     {
         $transcation = new Transaction();
-        $transfert = new Transfert();
 
         $form = $this->createForm(TransactionType::class, $transcation);
         $form->handleRequest($request);
@@ -91,8 +107,9 @@ class UserClientController extends AbstractController
         }
         if($form->isSubmitted()) {
             $transcation->setUserClient($userClient);
-            $this->getDoctrine()->getManager()->persist($transcation);
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->persist($transcation);
+            $this->entityManager->flush();
+            //$this->emailNotification->transactionAlert($userClient, $transcation);
             return $this->redirectToRoute("user_client_show", ['id'=>$userClient->getId()]);
         }
 
@@ -106,15 +123,17 @@ class UserClientController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="user_client_edit", methods={"GET", "POST"})
+     * @param Request $request
+     * @param UserClient $userClient
+     * @return Response
      */
-    public function edit(Request $request, UserClient $userClient, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, UserClient $userClient): Response
     {
         $form = $this->createForm(UserClientType::class, $userClient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
+            $this->entityManager->flush();
             return $this->redirectToRoute('user_client_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -127,11 +146,11 @@ class UserClientController extends AbstractController
     /**
      * @Route("/{id}", name="user_client_delete", methods={"POST"})
      */
-    public function delete(Request $request, UserClient $userClient, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, UserClient $userClient): Response
     {
         if ($this->isCsrfTokenValid('delete'.$userClient->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($userClient);
-            $entityManager->flush();
+            $this->entityManager->remove($userClient);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('user_client_index', [], Response::HTTP_SEE_OTHER);
@@ -164,8 +183,8 @@ class UserClientController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
             }
 
-            $this->getDoctrine()->getManager()->persist($operation);
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->persist($operation);
+            $this->entityManager->flush();
             return $this->redirectToRoute("user_client_show", ['id'=>$user_client->getId()]);
         }
 
