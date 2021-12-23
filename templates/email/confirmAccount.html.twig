@@ -1,1 +1,3 @@
 <h3>Confirmation du compte</h3>
+<p>Bonjour Mr/Mme <strong>{{ client.nom }} {{ client.prenom }}</strong></p>
+Veuillez cliquer sur se lien pour activer votre compte <a href="{{ absolute_url(path('active_account', {'token': client.emailToken})) }}">{{ absolute_url(path('active_account', {'token': client.emailToken})) }}</a>

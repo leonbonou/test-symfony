@@ -10,6 +10,7 @@ use App\Functions\MyFunction;
 use App\Notification\EmailNotification;
 use App\Repository\TransactionRepository;
 use App\Repository\TransfertRepository;
+use App\Services\AuthService;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,6 +60,9 @@ class TransferController extends AbstractController
      * @throws Exception
      */
     public function transfer(Request $request) {
+        if($this->security->getUser()->getEmailToken()) {
+            return $this->redirectToRoute('email_error');
+        }
         $new_transfert = new Transfert();
         $form = $this->createForm(TransfertType::class, $new_transfert);
         $form->handleRequest($request);
@@ -77,7 +81,7 @@ class TransferController extends AbstractController
                 ->setCreatedAt(new DateTime());
             $this->getDoctrine()->getManager()->persist($operation);
             $this->getDoctrine()->getManager()->flush();
-            //$this->emailNotification->transfertAlert($this->security->getUser(), $new_transfert);
+            $this->emailNotification->transfertAlert($this->security->getUser(), $new_transfert);
             return $this->redirectToRoute('account_transfer');
         }
 
@@ -95,6 +99,9 @@ class TransferController extends AbstractController
      * @return Response
      */
     public function show(Transfert $transfert, Request $request) {
+        if($this->security->getUser()->getEmailToken()) {
+            return $this->redirectToRoute('email_error');
+        }
         return $this->render('account/transfert_show.html.twig', [
             'transfert' => $transfert,
         ]);

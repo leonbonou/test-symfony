@@ -7,7 +7,10 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserClientRepository::class)
@@ -16,8 +19,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     fields={"email"},
  *     message="L'e-mail que vous avez indiqué est déjà utilisé!"
  * )
+ * @UniqueEntity(
+ *     fields={"username"},
+ *     message="Le username que vous avez indiqué est déjà utilisé!"
+ * )
  */
-class UserClient implements \Symfony\Component\Security\Core\User\UserInterface, \Serializable
+class UserClient implements UserInterface, Serializable
 {
     /**
      * @ORM\Id
@@ -28,16 +35,20 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min="6")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $prenom;
 
@@ -53,21 +64,26 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $profession;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $device;
 
@@ -78,10 +94,9 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $password;
-
-    private $cfrm_password;
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user_client")
@@ -98,12 +113,17 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
      */
     private $role_user;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email_token;
+
     public function __construct() {
         $this->created_at = new DateTime();
         $this->transactions = new ArrayCollection();
         $this->datetime = new ArrayCollection();
         $this->transferts = new ArrayCollection();
-        $this->role_user = 'ROLE_ADMIN';
+        $this->role_user = 'ROLE_CLIENT';
     }
 
     public function getId(): ?int
@@ -243,18 +263,6 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
         return $this;
     }
 
-    public function getCfrmPassword(): ?string
-    {
-        return $this->cfrm_password;
-    }
-
-    public function setCfrmPassword(string $cfrm_password): self
-    {
-        $this->cfrm_password = $cfrm_password;
-
-        return $this;
-    }
-
     /**
      * @inheritDoc
      */
@@ -295,6 +303,7 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
             $this->nom,
             $this->prenom,
             $this->date_at,
+            $this->email_token,
             $this->profession,
             $this->password,
             $this->device,
@@ -316,6 +325,7 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
             $this->prenom,
             $this->date_at,
             $this->profession,
+            $this->email_token,
             $this->password,
             $this->device,
             $this->pays,
@@ -391,6 +401,18 @@ class UserClient implements \Symfony\Component\Security\Core\User\UserInterface,
     public function setRoleUser(string $role_user): self
     {
         $this->role_user = $role_user;
+
+        return $this;
+    }
+
+    public function getEmailToken(): ?string
+    {
+        return $this->email_token;
+    }
+
+    public function setEmailToken(?string $email_token): self
+    {
+        $this->email_token = $email_token;
 
         return $this;
     }

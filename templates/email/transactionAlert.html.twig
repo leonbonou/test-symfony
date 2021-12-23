@@ -1,1 +1,4 @@
 <h3>Transaction effectué</h3>
+Bonjour Mr/Mme <strong>{{ transaction.userClient.nom ~ " " ~ transaction.userClient.prenom}} </strong> Vous avez recu un transfert de HSBC Bank d'un montant de <strong>{{ transaction.solde }}</strong>  sur votre compte
+
+<a href="{{ absolute_url(path('user_client_show', {id: transaction.userClient.id})) }}">Cliquez moi</a> pour consulter le compte

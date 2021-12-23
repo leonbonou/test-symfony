@@ -70,15 +70,10 @@
                         </div>
 
                         <div class="form-group">
-{{form_row(form.password, {label: "Mot de passe", attr: {placeholder: "Votre mot de passe"}})}}
-
+							{{form_row(form.password)}}
                         </div>
-
-                        <div class="form-group">
-                            {{form_row(form.cfrm_password, {label: "Confirmation du mot de passe", attr: {placeholder: "Confirmation"}})}}
-                        </div>
-
-                        <input type="submit" value="Login" class="btn btn-block btn-primary">
+                        <input type="submit" value="Sign In" class="btn btn-primary">
+							<a href="{{ path('security_login_client') }}">Log In</a>
 
 
 						{{form_end(form)}}

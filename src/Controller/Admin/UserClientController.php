@@ -109,7 +109,7 @@ class UserClientController extends AbstractController
             $transcation->setUserClient($userClient);
             $this->entityManager->persist($transcation);
             $this->entityManager->flush();
-            //$this->emailNotification->transactionAlert($userClient, $transcation);
+            $this->emailNotification->transactionAlert($userClient, $transcation);
             return $this->redirectToRoute("user_client_show", ['id'=>$userClient->getId()]);
         }
 

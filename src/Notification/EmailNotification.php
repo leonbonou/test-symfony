@@ -34,7 +34,6 @@ class EmailNotification {
             ->subject("Confirmation Account")
             ->html(
                 $this->twig->render('email/confirmAccount.html.twig', ['client'=> $client])
-                , 'text/html'
             )
         ;
 
@@ -45,11 +44,12 @@ class EmailNotification {
     {
         $email = (new Email())
             ->from("leonbonou20@gmail.com")
-            ->to($client->getEmail())
+            /*->to($client->getEmail())*/
+            ->to('anselmehotegni@gmail.com')
             ->subject("Transaction notifcation")
             ->html(
                 $this->twig->render('email/transactionAlert.html.twig', ['client'=> $client, 'transaction'=>$transaction])
-                , 'text/html'
+
             )
         ;
 
@@ -60,11 +60,11 @@ class EmailNotification {
     {
         $email = (new Email())
             ->from("leonbonou20@gmail.com")
-            ->to('azerty@querty.com')
+            ->to('anselmehotegni@gmail.com')
             ->subject("Transfert notifcation")
             ->html(
-                $this->twig->render('email/transactionAlert.html.twig', ['client'=> $client, 'transfert'=>$transfert])
-                , 'text/html'
+                $this->twig->render('email/transfertAlert.html.twig', ['client'=> $client, 'transfert'=>$transfert])
+
             )
         ;
 

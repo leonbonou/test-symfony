@@ -1,0 +1,16 @@
+{% extends 'base_register.html.twig' %}
+
+{% block page_title 'Status du transfert' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h2 class="title">Confirmer votre email. </h2>
+            <p>Consultez votre email pour activer votre compte</p>
+
+            <a href="{{ path('security_login_client') }}">Se connecter</a>
+        </div>
+    </div>
+
+{% endblock %}
+
