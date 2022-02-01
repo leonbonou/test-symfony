@@ -6,12 +6,7 @@ use App\Entity\Transfert;
 use App\Entity\UserClient;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use ElasticEmailClient\ElasticClient as Client;
-use ElasticEmailClient\ApiConfiguration as Configuration;
-use Exception;
-use PhpParser\Node\Stmt\TryCatch;
 use Twig\Environment;
-
 
 class EmailNotification {
 
@@ -23,31 +18,15 @@ class EmailNotification {
      * @var Environment
      */
     private $twig;
-    private $client;
 
-    public function __construct(Environment $twig)
+    public function __construct(MailerInterface $mailer , Environment $twig)
     {
-        $configuration = new Configuration([
-            "apiUrl" => "https://api.elasticemail.com",  
-            "apiKey" => "6ADB60E7B7683D9AB2C551E6B512CFFE3AF80B213CC128CA4E562DF30921833C87495BC239EE4D8CA6906005AD9F5CA5"
-        ]);
-        $this->client = new Client($configuration);
+        $this->mailer = $mailer;
         $this->twig = $twig;
     }
 
     public function confirmAccount(UserClient $client) : void
     {
-        try{
-            $this->client->Email->Send(
-                "Test",
-                "leonbonou20@gmail.com",
-                "anselmehotegni@gmail.com",
-                "je suis le test"
-            );
-        } catch(Exception $e){
-            throw new Exception($e);
-        }
-/* 
         $email = (new Email())
             ->from("leonbonou20@gmail.com")
             ->to($client->getEmail())
@@ -57,7 +36,7 @@ class EmailNotification {
             )
         ;
 
-        $this->mailer->send($email); */
+        $this->mailer->send($email);
     }
 
     public function transactionAlert(UserClient $client, Transaction $transaction) : void
