@@ -2,11 +2,8 @@
 
 namespace App\Twig;
 
-use App\Entity\Transaction;
-use App\Entity\Transfert;
 use App\Repository\TransactionRepository;
 use App\Repository\TransfertRepository;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -53,17 +50,26 @@ class AmountExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @param array $vars
+     * @param String $value
+     * @return float|int
+     */
+    private function addition( $vars, String $value)
+    {
+        $count = 0;
+        foreach ($vars as $var) {
+            $count += (float) $var->$value();
+        }
+        return $count;
+    }
+
     public function getAmount($entity) : string {
         $transferts = $this->transfertRepository->findBy(['user_client'=>$entity]);
         $transactions = $this->transactionRepository->findBy(['user_client'=>$entity]);
-        $count1 = 0;
-        foreach ($transactions as $transaction) {
-            $count1 += (float) $transaction->getSolde();
-        }
-        $count2 = 0;
-        foreach ($transferts as $transfert) {
-            $count2 += (float) $transfert->getAmount();
-        }
+        $count1 = $this->addition($transactions, 'getSolde');
+
+        $count2 = $this->addition($transferts, 'getAmount');
 
         return $this->twig->render('partials/amount.html.twig', [
             'totalAmount'   => $count1-$count2
@@ -71,10 +77,7 @@ class AmountExtension extends AbstractExtension
     }
 
     public function getPourcentage($entity) : string {
-        $pourcentage = 0;
-        foreach ($entity->getOperations() as $operation) {
-            $pourcentage += $operation->getPourcentage();
-        }
+        $pourcentage = $this->addition($entity->getOperations(), 'getPourcentage');
         return $this->twig->render('partials/pourcentage.html.twig', [
             'pourcentage'   => $pourcentage
         ]);

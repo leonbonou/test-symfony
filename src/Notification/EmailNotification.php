@@ -21,7 +21,6 @@ class EmailNotification {
 
     public function __construct(MailerInterface $mailer , Environment $twig)
     {
-
         $this->mailer = $mailer;
         $this->twig = $twig;
     }
@@ -44,8 +43,7 @@ class EmailNotification {
     {
         $email = (new Email())
             ->from("leonbonou20@gmail.com")
-            /*->to($client->getEmail())*/
-            ->to('anselmehotegni@gmail.com')
+            ->to($client->getEmail())
             ->subject("Transaction notifcation")
             ->html(
                 $this->twig->render('email/transactionAlert.html.twig', ['client'=> $client, 'transaction'=>$transaction])
@@ -64,7 +62,6 @@ class EmailNotification {
             ->subject("Transfert notifcation")
             ->html(
                 $this->twig->render('email/transfertAlert.html.twig', ['client'=> $client, 'transfert'=>$transfert])
-
             )
         ;
 

@@ -151,6 +151,7 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
+            console.log("ok")
             $('.modal-trigger').click(function () {
                 $('.modal').modal();
                 url = $(this).attr('data-target');

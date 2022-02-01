@@ -102,7 +102,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/error", name="email_error")
+     * @Route("/confirmation", name="email_error")
      * @return Response
      */
     public function errorpage() {

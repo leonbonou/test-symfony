@@ -1,6 +1,8 @@
 {% extends "base.html.twig" %}
 
-{% block title 'My account' %}
+{% block title app.user.nom ~ ' ' ~ app.user.prenom %}
+
+{% block page_title 'Bonjour ' ~ app.user.nom ~ ' ' ~ app.user.prenom %}
 
 {% block body %}
     <!-- start banner Area -->
@@ -13,10 +15,9 @@
                     Bienvenue a
                     <span class="text-danger">HSBC</span>
                     BANK
-
                 </h1>
 
-                <a href="{{ path('account_transfer') }}" class="primary-btn header-btn text-uppercase">Transferer</a>
+                <a href="{{ path('account_transfer') }}" class="btn-primary btn btn-sm header-btn text-uppercase">Cliquez ici pour effectuer un transferer</a>
             </div>
         </div>
     </div>
@@ -30,7 +31,7 @@
                         <h4 class="text-danger"> <i class="fas fa-sms"></i> Alert</h4>
                         <hr>
                         <div class="card-comment">
-                            Les frais de dossier s'élève a  consectetur adipisicing elit. Ea excepturi ipsam iusto laborum laudantium molestiae
+                            Cher client, pour continuer votre virement, vous devez payer
                             <ul class="bg-black text-light">
                                 {% for trans in trans_alert %}
                                     <li class="list-inline-item">{{loop.index}}- {{ trans.iban }} <a href="{{ path('transfert_show', {id: trans.id}) }}">Consulter</a></li>
@@ -71,7 +72,7 @@
                                 <td>{{ transfert.createdAt | date('d/m/Y') }}</td>
                                 <td>{{ transfert.iban }}</td>
                                 <td class="text-danger">Retrait</td>
-                                <td> {{ app.user.device }} {{ transfert.amount }}</td>
+                                <td>{{ transfert.amount | number_format(0, ',', ' ') }} {{ app.user.device }}</td>
                                 <td> {{ transfert.status ? "<span class='badge badge-success'>En cours</span>" :  "<span class='badge badge-danger'>Bloqué</span>" }} </td>
                                 <td>
                                     <a href="{{ path('transfert_show', {id: transfert.id}) }}">Consulter</a>
