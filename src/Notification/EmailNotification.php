@@ -27,7 +27,7 @@ class EmailNotification {
         $this->twig = $twig;
     }
 
-    public function confirmAccount(UserClient $client, Swift_Mailer $mailer) : void
+    public function confirmAccount(UserClient $client, $mailer) : void
     {
         
         $email = (new Swift_Message('Confirmation Account'))

@@ -8,6 +8,7 @@ use App\Notification\EmailNotification;
 use App\Repository\UserClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +42,7 @@ class SecurityController extends AbstractController
             $this->getDoctrine()->getManager()->persist($user_client);
             $this->getDoctrine()->getManager()->flush();
 
-            $notification->confirmAccount($user_client);
+            $notification->confirmAccount($user_client, Swift_Mailer::class);
 
             return $this->redirectToRoute("email_confirmation");
         }
