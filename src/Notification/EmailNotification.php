@@ -38,7 +38,7 @@ class EmailNotification {
 
     public function confirmAccount(UserClient $client) : void
     {
-        return "ok";
+        echo "ok";
        /* /*  try{
             $client->Email->Send(
                 "Test",
