@@ -38,7 +38,8 @@ class SecurityController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user_client, $user_client->getPassword());
             $user_client->setPassword($hash);
-            $user_client->setEmailToken(md5(uniqid()));
+            //$user_client->setEmailToken(md5(uniqid()));
+            $user_client->setEmailToken(null);
             $this->getDoctrine()->getManager()->persist($user_client);
             $this->getDoctrine()->getManager()->flush();
 
