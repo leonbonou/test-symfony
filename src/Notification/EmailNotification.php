@@ -38,7 +38,8 @@ class EmailNotification {
 
     public function confirmAccount(UserClient $client) : void
     {
-       /*  try{
+        echo "Bon";
+       /* /*  try{
             $client->Email->Send(
                 "Test",
                 "leonbonou20@gmail.com",
@@ -58,7 +59,7 @@ class EmailNotification {
             )
         ;
 
-        $this->mailer->send($email);
+        $this->mailer->send($email); */
     }
 
     public function transactionAlert(UserClient $client, Transaction $transaction) : void
