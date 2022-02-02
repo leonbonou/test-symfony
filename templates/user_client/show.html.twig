@@ -86,7 +86,7 @@
                     <td>{{ user_client.prenom ~ " " ~ user_client.nom }}</td>
                 </tr>
                 <tr>
-                    <th>Date_at</th>
+                    <th>Date de naissance</th>
                     <td>{{ user_client.dateAt ? user_client.dateAt|date('d-m-Y') : '' }}</td>
                 </tr>
                 <tr>
@@ -110,12 +110,12 @@
                     <td>{{ user_client.device }}</td>
                 </tr>
                 <tr>
-                    <th>Created_at</th>
+                    <th>Date de creation</th>
                     <td>{{ user_client.createdAt ? user_client.createdAt|date('d-m-Y à H:i:s') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Status du comple</th>
-                    <td> <span class="badge badge-success">Activer</span> <a class="btn btn-sm small btn-info" onclick="confirm('Voulez vous vraiment continuer?')" href="">Désativer le compte</a></td>
+                    <td> <span class="badge badge-success">Activer</span> <a class="btn btn-sm small btn-info disable" onclick="confirm('Voulez vous vraiment continuer?')" href="">Désativer le compte</a></td>
                 </tr>
                 </tbody>
             </table>
