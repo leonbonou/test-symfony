@@ -66,8 +66,8 @@
                 <td>{{ user_client.email }}</td>
                 <td>{{ user_client.device }}</td>
                 <td>
-                    <a href="{{ path('user_client_show', {'id': user_client.id}) }}">show</a>
-                    <a href="{{ path('user_client_edit', {'id': user_client.id}) }}">edit</a>
+                    <a class="btn btn-small btn-primary" href="{{ path('user_client_show', {'id': user_client.id}) }}">show</a>
+                    <a class="btn btn-small btn-dark" href="{{ path('user_client_edit', {'id': user_client.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
