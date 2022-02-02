@@ -81,7 +81,7 @@ class TransferController extends AbstractController
                 ->setCreatedAt(new DateTime());
             $this->getDoctrine()->getManager()->persist($operation);
             $this->getDoctrine()->getManager()->flush();
-            $this->emailNotification->transfertAlert($this->security->getUser(), $new_transfert);
+            //$this->emailNotification->transfertAlert($this->security->getUser(), $new_transfert);
             return $this->redirectToRoute('account_transfer');
         }
 

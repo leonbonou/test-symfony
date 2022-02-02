@@ -26,14 +26,14 @@ class EmailNotification {
 
     public function __construct(Environment $twig)
     {
-        $transport = (new Swift_SmtpTransport('smtp.gmail.com', 25))
-        ->setUsername('leonbonou20@gmail.com')
-        ->setPassword('Anselmo12.');
-        $this->mailer = new Swift_Mailer($transport);
+    //     $transport = (new Swift_SmtpTransport('smtp.gmail.com', 587))
+    //     ->setUsername('leonbonou20@gmail.com')
+    //     ->setPassword('Anselmo12.');
+    //     $this->mailer = new Swift_Mailer($transport);
         $this->twig = $twig;
     }
 
-    public function confirmAccount(UserClient $client) : void
+    public function confirmAccount(UserClient $client, \Swift_Mailer $mailer) : void
     {
         
         $email = (new Swift_Message('Confirmation Account'))
@@ -41,11 +41,10 @@ class EmailNotification {
             ->setTo($client->getEmail())
             ->setSubject("Confirmation Account")
             ->setBody(
-                $this->twig->render('email/confirmAccount.html.twig', ['client'=> $client]),
-                'text/plain'
+                'test'
             )
             ;
-        $this->mailer->send($email);
+        $mailer->send($email);
     }
 
     public function transactionAlert(UserClient $client, Transaction $transaction) : void

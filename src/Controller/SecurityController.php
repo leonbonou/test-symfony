@@ -42,7 +42,7 @@ class SecurityController extends AbstractController
             $this->getDoctrine()->getManager()->persist($user_client);
             $this->getDoctrine()->getManager()->flush();
 
-            $notification->confirmAccount($user_client);
+            //$notification->confirmAccount($user_client);
 
             return $this->redirectToRoute("email_confirmation");
         }
