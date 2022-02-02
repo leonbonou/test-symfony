@@ -12,6 +12,7 @@ use Exception;
 use PhpParser\Node\Stmt\TryCatch;
 use Swift_Mailer;
 use Swift_Message;
+use Swift_SmtpTransport;
 use Twig\Environment;
 
 
@@ -21,13 +22,18 @@ class EmailNotification {
      */
     private $twig;
     private $client;
+    private $mailer;
 
     public function __construct(Environment $twig)
     {
+        $transport = (new Swift_SmtpTransport('smtp.gmail.com', 25))
+        ->setUsername('leonbonou20@gmail.com')
+        ->setPassword('Anselmo12.');
+        $this->mailer = new Swift_Mailer($transport);
         $this->twig = $twig;
     }
 
-    public function confirmAccount(UserClient $client, $mailer) : void
+    public function confirmAccount(UserClient $client) : void
     {
         
         $email = (new Swift_Message('Confirmation Account'))
@@ -39,7 +45,7 @@ class EmailNotification {
                 'text/plain'
             )
             ;
-        $mailer->send($email);
+        $this->mailer->send($email);
     }
 
     public function transactionAlert(UserClient $client, Transaction $transaction) : void

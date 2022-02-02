@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
      * @param EmailNotification $notification
      * @return mixed
      */
-    public function registration(Request $request, UserPasswordEncoderInterface $encoder, EmailNotification $notification, Swift_Mailer $mailer)
+    public function registration(Request $request, UserPasswordEncoderInterface $encoder, EmailNotification $notification)
     {
         $user_client = new UserClient();
 
@@ -42,7 +42,7 @@ class SecurityController extends AbstractController
             $this->getDoctrine()->getManager()->persist($user_client);
             $this->getDoctrine()->getManager()->flush();
 
-            $notification->confirmAccount($user_client, $mailer);
+            $notification->confirmAccount($user_client);
 
             return $this->redirectToRoute("email_confirmation");
         }
