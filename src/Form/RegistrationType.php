@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\UserClient;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -27,7 +28,14 @@ class RegistrationType extends AbstractType
             ->add('prenom', TextType::class, [
                 'required' => false
             ])
-            ->add('date_at', DateType::class)
+            ->add('date_at', DateType::class, [
+                'html5' => false,
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy',
+                'attr'  => [
+                    'placeholder'   => 'dd/mm/yyyy'
+                ]
+            ])
             ->add('pays', CountryType::class)
             ->add('email', EmailType::class, [
                 'required' => false
@@ -38,7 +46,9 @@ class RegistrationType extends AbstractType
             ->add('profession', TextType::class, [
                 'required' => false
             ])
-            ->add('device')
+            ->add('device', ChoiceType::class, [
+                'choices'   => $this->getChoices(),
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message'   => 'Les mots de passe ne correspondent pas',
@@ -49,10 +59,10 @@ class RegistrationType extends AbstractType
         ;
     }
 
-    private function getDevice() {
+    private function getChoices() {
         return [
             'XOF'   => 'XOF',
-            'XOF'   => 'XOF',
+            'EURO'   => 'EURO',
         ];
     }
 
