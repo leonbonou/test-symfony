@@ -10,14 +10,13 @@ use ElasticEmailClient\ElasticClient as Client;
 use ElasticEmailClient\ApiConfiguration as Configuration;
 use Exception;
 use PhpParser\Node\Stmt\TryCatch;
+use Swift_Mailer;
+use Swift_Message;
 use Twig\Environment;
 
 
 class EmailNotification {
 
-    /**
-     * @var MailerInterface
-     */
     private $mailer;
     /**
      * @var Environment
@@ -25,41 +24,25 @@ class EmailNotification {
     private $twig;
     private $client;
 
-    public function __construct(MailerInterface $mailer, Environment $twig)
+    public function __construct(Swift_Mailer $mailer, Environment $twig)
     {
-        /* $configuration = new Configuration([
-            "apiUrl" => "https://api.elasticemail.com",  
-            "apiKey" => "6ADB60E7B7683D9AB2C551E6B512CFFE3AF80B213CC128CA4E562DF30921833C87495BC239EE4D8CA6906005AD9F5CA5"
-        ]);
-        $this->client = new Client($configuration); */
         $this->twig = $twig;
         $this->mailer = $mailer;
     }
 
     public function confirmAccount(UserClient $client) : void
     {
-        echo "ok";
-       /* /*  try{
-            $client->Email->Send(
-                "Test",
-                "leonbonou20@gmail.com",
-                "anselmehotegni@gmail.com",
-                "je suis le test"
-            );
-        } catch(Exception $e){
-            throw new Exception($e);
-        } 
         
-        $email = (new Email())
-            ->from("leonbonou20@gmail.com")
-            ->to($client->getEmail())
-            ->subject("Confirmation Account")
-            ->html(
-                $this->twig->render('email/confirmAccount.html.twig', ['client'=> $client])
+        $email = (new Swift_Message('Confirmation Account'))
+            ->setFrom("leonbonou20@gmail.com")
+            ->setTo($client->getEmail())
+            ->setSubject("Confirmation Account")
+            ->setBody(
+                $this->twig->render('email/confirmAccount.html.twig', ['client'=> $client]),
+                'text/plain'
             )
-        ;
-
-        $this->mailer->send($email); */
+            ;
+        $this->mailer->send($email);
     }
 
     public function transactionAlert(UserClient $client, Transaction $transaction) : void
