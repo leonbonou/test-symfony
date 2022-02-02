@@ -48,7 +48,7 @@ class EmailNotification {
             );
         } catch(Exception $e){
             throw new Exception($e);
-        } */
+        } 
         
         $email = (new Email())
             ->from("leonbonou20@gmail.com")
