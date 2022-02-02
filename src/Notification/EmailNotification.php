@@ -16,21 +16,18 @@ use Twig\Environment;
 
 
 class EmailNotification {
-
-    private $mailer;
     /**
      * @var Environment
      */
     private $twig;
     private $client;
 
-    public function __construct(Swift_Mailer $mailer, Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
-        $this->mailer = $mailer;
     }
 
-    public function confirmAccount(UserClient $client) : void
+    public function confirmAccount(UserClient $client, Swift_Mailer $mailer) : void
     {
         
         $email = (new Swift_Message('Confirmation Account'))
@@ -42,7 +39,7 @@ class EmailNotification {
                 'text/plain'
             )
             ;
-        $this->mailer->send($email);
+        $mailer->send($email);
     }
 
     public function transactionAlert(UserClient $client, Transaction $transaction) : void
