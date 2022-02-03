@@ -72,8 +72,8 @@
                         <div class="form-group">
 							{{form_row(form.password)}}
                         </div>
-                        <input type="submit" value="Sign In" class="btn btn-primary">
-							<a href="{{ path('security_login_client') }}">Log In</a>
+                        <button type="submit" class="btn btn-sm btn-primary btn-block"><i class="fas fa-sign-in"></i> S'inscrire</button> <br>
+							<a href="{{ path('security_login_client') }}">Se connecter</a>
 
 
 						{{form_end(form)}}
