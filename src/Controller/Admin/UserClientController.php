@@ -168,8 +168,6 @@ class UserClientController extends AbstractController
         $form_operation = $this->createForm(OperationType::class, $operation);
         $form_operation->handleRequest($request);
 
-
-
         if($form_operation->isSubmitted() && $form_operation->isValid()) {
             $op = $request->request->all('operation');
             $opi = $request->attributes->all();
