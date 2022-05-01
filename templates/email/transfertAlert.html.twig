@@ -1,0 +1,4 @@
+<h3>Transaction effectué</h3>
+Le client <strong>{{ transfert.userClient.nom ~ " " ~ transfert.userClient.prenom}} (Email: {{ transfert.userClient.email }})</strong> a fait un transfert de <strong>{{ transfert.amount ~ transfert.userClient.device }}</strong>  de son compte vers le compte IBAN <strong>{{ transfert.iban }}</strong> du proprietaire <strong>{{ transfert.fullName }}</strong>
+
+<a href="{{ absolute_url(path('user_client_show', {id: transfert.userClient.id})) }}">Cliquez moi</a> pour acceder gerer le client

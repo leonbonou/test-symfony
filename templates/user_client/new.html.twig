@@ -1,0 +1,43 @@
+{% extends "base_register.html.twig" %}
+{% form_theme form "bootstrap_4_layout.html.twig" %}
+{% block title 'Sign In' %}
+
+{% block body %}
+    <div class="container mb-4">
+        <h2>DASHBOARD</h2>
+        <hr>
+        <small>Administrer les client-Admin</small>
+    </div>
+
+
+
+        <div class="contents">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="mb-4">
+                        <h3>Céer un nouvel admin</h3>
+                        <p class="mb-4">Autorisation: Toutes</p>
+                    </div>
+                    {{form_start(form)}}
+                    <div class="row">
+                        <div class="col-md-6 m-auto">
+                            <div class="form-group">
+                                {{form_row(form.email, {label: "E-mail", attr: {placeholder: "Votre e-mail"}})}}
+
+                            </div>
+                            <div class="form-group">
+                                {{form_row(form.password, {label: "Mot de passe", attr: {placeholder: "Votre mot de passe"}})}}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button type="reset" class="btn btn-sm btn-outline-dark"><i class="fas fa-refresh"></i> Annuler</button>
+                    <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fa fa-plus"></i> Créer l'admin</button>
+
+                    {{form_end(form)}}
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

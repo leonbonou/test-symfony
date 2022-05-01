@@ -1,0 +1,7 @@
+<h3>Account confirmation</h3>
+Hello Sir/Madam<strong>{{ client.nom }}{{ client.prenom }}</strong>
+<br/>
+
+Congratulations, your HASUBAC account has been successfully created.
+Please click on the link below to activate your account
+<a href="{{ absolute_url(path('active_account', {'token': client.emailToken})) }}">{{ absolute_url(path('active_account', {'token': client.emailToken})) }}</a>

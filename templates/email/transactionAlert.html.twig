@@ -1,0 +1,9 @@
+<h3>Transaction made</h3>
+
+
+Dear customer, this
+{{transaction.created_at | date('d/m/Y')}}, your account is credited with <strong>{{ transaction.solde }}</strong>. <br>
+
+Please login to transfer from your account to your main bank account. 
+<a href="{{ absolute_url(path('user_client_show', {id: transaction.userClient.id})) }}">Click</a> to view the transfer
+
